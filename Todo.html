@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>Todo Application</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="C:/Users/alagu/Desktop/Angular JS/styles.css">
+  </head>
+  <body ng-app="myApp" ng-controller="todoCtrl">
+
+    <div class="container">
+      <div class="row m-t-3 m-b-2">
+        <div class="col-md-12">
+          <h2>Todo List</h2>
+          <input type="search" ng-model="todoSearch" placeholder="Search" size="58">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+   	  <!-- Adds the text box and the submit button -->
+    	  <form ng-submit="todoAdd()">
+      	    <input type="text" ng-model="todoInput" size="58" placeholder="Add Task">
+            <div class="row">
+              <div class="col-md-6">
+                <input type="text" ng-model="todoDescription" size="30" placeholder="Add Description">
+                <input type="date" data-ng-model="todoDate" size="10" placeholder="yyyy-MM-dd">
+          	<input type="submit" value="Add New">
+              </div>
+            </div>
+    	  </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Adds a checkbox -->
+          <div ng-repeat="x in todoList">
+            <input type="checkbox" ng-model="x.done">
+            <span ng-bind="x.todoText" style="font-size:x-large;"></span>
+            <h6 ng-bind="x.todoDescription" style="font-size:medium;"></h6>
+            <h6 ng-bind="x.todoDate" style="font-size:medium"></h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-t-1">
+        <div class="col-md-12">
+          <!-- Add the remove button -->
+          <button ng-click="remove()">Remove Task</button>
+        </div>
+      </div>
+
+    <!-- END CONTAINER -->
+    </div>
+
+    <script>
+      var app = angular.module('myApp', []);
+      app.controller('todoCtrl', function($scope) {
+        <!-- Create the array -->
+        $scope.todoList = [{todoText:"Clean House", done:false, todoDescription:"Especially under the sink", todoDate:"2015-10-20"}];
+        <!-- Add todo's to the list -->
+        $scope.todoAdd = function() {
+          <!-- Push todo with description into array -->
+          var time = $scope.todoDate;
+          if (!$scope.todoInput == " " && !$scope.todoDescription == " ") {
+            $scope.todoList.push({todoText:$scope.todoInput, done:false, todoDescription:$scope.todoDescription, todoDate:time});
+            <!-- Clears the input stream -->
+            $scope.todoInput = "";
+            $scope.todoDescription = "";
+            $scope.todoDate = "";
+          }
+        };
+        <!-- Remove todo's from the list -->
+        $scope.remove = function() {
+          var oldList = $scope.todoList;
+          $scope.todoList = [];
+          angular.forEach(oldList, function(x) {
+            if (!x.done) $scope.todoList.push(x);
+          });
+        };
+      <!-- End controller -->
+      });
+    </script>
+
+  </body>  
+</html>
+
